@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sill — AI Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0b;--surface:#111113;--surface2:#1a1a1d;
+  --text:#e8e8ed;--text2:#8a8a95;--accent:#6c63ff;
+  --accent2:#00d4aa;--accent3:#ff6b6b;
+  --border:#222228;--radius:16px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none;transition:color .2s}
+a:hover{color:var(--accent2)}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:100;backdrop-filter:blur(20px);background:rgba(10,10,11,.8);border-bottom:1px solid var(--border)}
+nav .inner{max-width:1100px;margin:0 auto;padding:16px 24px;display:flex;justify-content:space-between;align-items:center}
+nav .logo{font-weight:700;font-size:18px;letter-spacing:-0.5px}
+nav .logo span{color:var(--accent)}
+nav ul{list-style:none;display:flex;gap:28px}
+nav ul a{color:var(--text2);font-size:14px;font-weight:500;transition:color .2s}
+nav ul a:hover{color:var(--text)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(108,99,255,.12),transparent 70%);top:10%;left:50%;transform:translateX(-50%);pointer-events:none}
+.hero::after{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,170,.08),transparent 70%);bottom:10%;right:10%;pointer-events:none}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:4px;color:var(--accent);margin-bottom:24px;opacity:0;animation:fadeUp .8s ease forwards}
+.hero h1{font-size:clamp(40px,8vw,72px);font-weight:700;letter-spacing:-2px;line-height:1.05;margin-bottom:20px;opacity:0;animation:fadeUp .8s ease .15s forwards}
+.hero h1 .highlight{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:18px;color:var(--text2);max-width:520px;margin:0 auto 36px;opacity:0;animation:fadeUp .8s ease .3s forwards}
+.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .8s ease .45s forwards}
+.btn{padding:14px 32px;border-radius:50px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .3s;border:none}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#5a52e0;transform:translateY(-2px);box-shadow:0 8px 30px rgba(108,99,255,.3)}
+.btn-ghost{background:transparent;color:var(--text);border:1.5px solid var(--border)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+
+/* SECTIONS */
+section{padding:100px 24px}
+.section-inner{max-width:1100px;margin:0 auto}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:4px;color:var(--accent2);margin-bottom:12px}
+.section-title{font-size:clamp(28px,5vw,42px);font-weight:700;letter-spacing:-1px;margin-bottom:20px}
+.section-desc{color:var(--text2);font-size:16px;max-width:560px;margin-bottom:48px}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.about-text p{color:var(--text2);margin-bottom:16px;font-size:15px}
+.about-text p strong{color:var(--text)}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center}
+.stat-num{font-size:28px;font-weight:700;color:var(--accent);font-family:'JetBrains Mono',monospace}
+.stat-label{font-size:12px;color:var(--text2);margin-top:4px;text-transform:uppercase;letter-spacing:1px}
+
+/* PROJECTS */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+.project-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .4s;position:relative}
+.project-card:hover{border-color:var(--accent);transform:translateY(-6px);box-shadow:0 20px 60px rgba(108,99,255,.1)}
+.project-top{padding:28px 28px 0;display:flex;justify-content:space-between;align-items:start}
+.project-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px}
+.project-status{font-family:'JetBrains Mono',monospace;font-size:10px;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;font-weight:500}
+.status-live{background:rgba(0,212,170,.15);color:var(--accent2)}
+.status-wip{background:rgba(255,107,107,.15);color:var(--accent3)}
+.status-planned{background:rgba(108,99,255,.15);color:var(--accent)}
+.project-body{padding:20px 28px 28px}
+.project-body h3{font-size:20px;font-weight:600;margin-bottom:8px;letter-spacing:-0.3px}
+.project-body p{color:var(--text2);font-size:14px;line-height:1.6;margin-bottom:16px}
+.project-tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 10px;background:var(--surface2);border-radius:6px;color:var(--text2)}
+
+/* SKILLS */
+.skills-wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px}
+.skill-group{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px}
+.skill-group h3{font-size:14px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);margin-bottom:20px;font-family:'JetBrains Mono',monospace}
+.skill-item{display:flex;align-items:center;gap:10px;margin-bottom:14px;font-size:14px;color:var(--text2)}
+.skill-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-strong{background:var(--accent2)}
+.dot-learning{background:var(--accent)}
+.dot-next{background:var(--accent3)}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:32px}
+.timeline::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:var(--border)}
+.tl-item{position:relative;margin-bottom:36px}
+.tl-item::before{content:'';position:absolute;left:-29px;top:6px;width:12px;height:12px;border-radius:50%;border:2px solid var(--accent);background:var(--bg)}
+.tl-item.active::before{background:var(--accent);box-shadow:0 0 12px rgba(108,99,255,.5)}
+.tl-date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent2);margin-bottom:6px}
+.tl-item h3{font-size:18px;font-weight:600;margin-bottom:4px}
+.tl-item p{font-size:14px;color:var(--text2)}
+
+/* CONTACT */
+.contact-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:48px;text-align:center;max-width:600px;margin:0 auto}
+.contact-box h2{font-size:28px;font-weight:700;margin-bottom:12px;letter-spacing:-0.5px}
+.contact-box p{color:var(--text2);margin-bottom:28px;font-size:15px}
+.contact-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.contact-link{display:flex;align-items:center;gap:8px;padding:12px 24px;background:var(--surface2);border:1px solid var(--border);border-radius:50px;font-size:14px;color:var(--text);transition:all .3s;font-weight:500}
+.contact-link:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+
+/* FOOTER */
+footer{text-align:center;padding:40px 24px;border-top:1px solid var(--border);color:var(--text2);font-size:13px;font-family:'JetBrains Mono',monospace}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(30px);transition:all .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav ul{gap:16px}
+  .about-grid{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:repeat(3,1fr)}
+  .projects-grid{grid-template-columns:1fr}
+  section{padding:60px 20px}
+}
+@media(max-width:480px){
+  nav ul{display:none}
+  .stats-row{grid-template-columns:1fr}
+  .hero h1{font-size:36px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <div class="logo">sill<span>.dev</span></div>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#journey">Journey</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-label">AI Developer · Builder · Problem Solver</div>
+    <h1>I build things with<br><span class="highlight">Artificial Intelligence</span></h1>
+    <p>Business mind meets builder hands. Transitioning into Applied AI — learning by doing, one project at a time.</p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-primary">See My Work</a>
+      <a href="https://github.com/sillkane" class="btn btn-ghost" target="_blank">GitHub ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner reveal">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-label">About Me</div>
+        <div class="section-title">Not your typical CS student.</div>
+        <p>I come from a <strong>business and marketing background</strong> — which means I don't just build technology, I build technology that <strong>solves real problems</strong>.</p>
+        <p>I'm currently transitioning into <strong>Applied Artificial Intelligence</strong>, learning Python, machine learning, and web development by actually building projects — not just watching tutorials.</p>
+        <p>Based in <strong>Kazakhstan</strong>, building for a global audience. Fluent in <strong>English and Russian</strong>.</p>
+      </div>
+      <div>
+        <div class="stats-row">
+          <div class="stat">
+            <div class="stat-num">1+</div>
+            <div class="stat-label">Deployed Projects</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">2</div>
+            <div class="stat-label">Languages</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">∞</div>
+            <div class="stat-label">Curiosity</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" style="background:var(--surface)">
+  <div class="section-inner reveal">
+    <div class="section-label">Projects</div>
+    <div class="section-title">What I've Built</div>
+    <div class="section-desc">Each project solves a real problem. More coming as I learn and grow.</div>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-top">
+          <div class="project-icon" style="background:rgba(0,212,170,.12)">🤖</div>
+          <span class="project-status status-live">● Live</span>
+        </div>
+        <div class="project-body">
+          <h3>AI Chatbot</h3>
+          <p>A conversational AI chatbot deployed and running 24/7 on Railway. Built from scratch using Python and API integration.</p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">API</span>
+            <span class="tag">Railway</span>
+            <span class="tag">Deployed</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-top">
+          <div class="project-icon" style="background:rgba(108,99,255,.12)">📊</div>
+          <span class="project-status status-wip">● Building</span>
+        </div>
+        <div class="project-body">
+          <h3>Data Analysis Dashboard</h3>
+          <p>Exploring public datasets with Python, Pandas, and data visualization tools. Turning raw data into actionable insights.</p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Pandas</span>
+            <span class="tag">Matplotlib</span>
+            <span class="tag">Data Viz</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-top">
+          <div class="project-icon" style="background:rgba(255,107,107,.12)">🧠</div>
+          <span class="project-status status-planned">● Planned</span>
+        </div>
+        <div class="project-body">
+          <h3>AI Image Classifier</h3>
+          <p>Building an image classification app using pre-trained ML models. Learning machine learning fundamentals hands-on.</p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">HuggingFace</span>
+            <span class="tag">ML</span>
+            <span class="tag">Computer Vision</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-top">
+          <div class="project-icon" style="background:rgba(0,212,170,.12)">⚡</div>
+          <span class="project-status status-planned">● Planned</span>
+        </div>
+        <div class="project-body">
+          <h3>Telegram AI Bot</h3>
+          <p>An intelligent Telegram bot that automates daily tasks — from news summaries to content generation for CIS audiences.</p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Telegram API</span>
+            <span class="tag">AI</span>
+            <span class="tag">Automation</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-inner reveal">
+    <div class="section-label">Skills</div>
+    <div class="section-title">My Toolkit</div>
+    <div class="section-desc">Growing every day. Green = confident, purple = learning, red = next on the list.</div>
+    <div class="skills-wrap">
+      <div class="skill-group">
+        <h3>Languages</h3>
+        <div class="skill-item"><span class="skill-dot dot-learning"></span>Python</div>
+        <div class="skill-item"><span class="skill-dot dot-learning"></span>HTML / CSS</div>
+        <div class="skill-item"><span class="skill-dot dot-next"></span>JavaScript</div>
+        <div class="skill-item"><span class="skill-dot dot-next"></span>SQL</div>
+      </div>
+      <div class="skill-group">
+        <h3>AI / Data</h3>
+        <div class="skill-item"><span class="skill-dot dot-learning"></span>API Integration</div>
+        <div class="skill-item"><span class="skill-dot dot-learning"></span>Prompt Engineering</div>
+        <div class="skill-item"><span class="skill-dot dot-next"></span>Machine Learning</div>
+        <div class="skill-item"><span class="skill-dot dot-next"></span>Data Analysis</div>
+      </div>
+      <div class="skill-group">
+        <h3>Tools</h3>
+        <div class="skill-item"><span class="skill-dot dot-strong"></span>Git / GitHub</div>
+        <div class="skill-item"><span class="skill-dot dot-strong"></span>VS Code</div>
+        <div class="skill-item"><span class="skill-dot dot-strong"></span>Railway (deploy)</div>
+        <div class="skill-item"><span class="skill-dot dot-learning"></span>Jupyter Notebooks</div>
+      </div>
+      <div class="skill-group">
+        <h3>Soft Skills</h3>
+        <div class="skill-item"><span class="skill-dot dot-strong"></span>Business Strategy</div>
+        <div class="skill-item"><span class="skill-dot dot-strong"></span>Marketing / SEO</div>
+        <div class="skill-item"><span class="skill-dot dot-strong"></span>Bilingual (EN/RU)</div>
+        <div class="skill-item"><span class="skill-dot dot-strong"></span>Self-Directed Learning</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY -->
+<section id="journey" style="background:var(--surface)">
+  <div class="section-inner reveal">
+    <div class="section-label">Journey</div>
+    <div class="section-title">The Road So Far</div>
+    <div class="section-desc">From business to AI — every step matters.</div>
+    <div class="timeline">
+      <div class="tl-item active">
+        <div class="tl-date">2026 — Now</div>
+        <h3>Building AI Portfolio</h3>
+        <p>Actively building projects, learning Python and ML, preparing for Applied AI program.</p>
+      </div>
+      <div class="tl-item active">
+        <div class="tl-date">2026</div>
+        <h3>First Deployed Project</h3>
+        <p>Built and deployed an AI chatbot on Railway — first real project running in production.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2025</div>
+        <h3>Discovered AI</h3>
+        <p>Started exploring AI tools, prompt engineering, and automation. Realized this is the future I want to build.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Earlier</div>
+        <h3>Business & Marketing Background</h3>
+        <p>Built foundational skills in strategy, marketing, SEO, and content creation. These still power everything I build.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner reveal">
+    <div class="contact-box">
+      <h2>Let's Connect</h2>
+      <p>I'm always open to conversations about AI, collaboration opportunities, or just geeking out about what's next in tech.</p>
+      <div class="contact-links">
+        <a href="https://github.com/sillkane" target="_blank" class="contact-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a href="https://linkedin.com" target="_blank" class="contact-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a href="mailto:your@email.com" class="contact-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          Email
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Built with curiosity & caffeine · 2026</p>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Smooth nav
+document.querySelectorAll('nav a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
